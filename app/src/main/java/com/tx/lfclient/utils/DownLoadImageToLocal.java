@@ -40,7 +40,6 @@ public class DownLoadImageToLocal {
     private static String root;
 
     static{
-
         MyApplication.getInstance().getExternalCacheDir();
         if(hasSDCard()){
            root= Environment.getExternalStorageDirectory().getPath();
