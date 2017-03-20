@@ -1,0 +1,21 @@
+
+
+list<LFMessage>
+
+LFMessage  include   User    images   List<Words>
+
+the main change is the words data,and the other data should change, too
+
+long time ,we use the list<Object> ,but it is the correct one?
+
+such as we can use the  Map<MessageId,LFMessage> instead of it,
+
+
+
+typedef  封装一种数据结构，包含  list，map特性
+
+
+当我想自己整理一个数据结构时，意外地发现，官方有类似的数据结构。。。
+
+
+SparseArray

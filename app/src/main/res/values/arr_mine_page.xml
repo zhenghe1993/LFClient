@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mine_page_text">
+        <item>失物记录</item>
+        <item>招领记录</item>
+        <item>发现记录</item>
+        <item>账户设置</item>
+        <item>分享</item>
+        <item>清空缓存</item>
+        <item>意见反馈</item>
+        <item>系统更新</item>
+        <item>关于我们"</item>
+    </string-array>
+    <string-array name="mine_page_image">
+         <item>@mipmap/mine_lost</item>
+         <item>@mipmap/mine_found</item>
+         <item>@mipmap/mine_discover</item>
+         <item>@mipmap/mine_setting</item>
+         <item>@mipmap/mine_share</item>
+         <item>@mipmap/mine_cache</item>
+         <item>@mipmap/mine_feedback</item>
+         <item>@mipmap/mine_update</item>
+         <item>@mipmap/mine_about_us</item>
+    </string-array>
+</resources>

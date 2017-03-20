@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00ffff">
+
+    <ImageView
+        android:id="@+id/guide_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/guide_five_two" />
+
+    <ImageView
+        android:id="@+id/guide_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@null"
+        android:src="@mipmap/guide_five_three" />
+
+    <ImageView
+        android:id="@+id/guide_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="10dip"
+        android:contentDescription="@null"
+        android:src="@mipmap/guide_next"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/guide_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="5dip"
+        android:background="@drawable/login_register_button"
+        android:padding="5dip"
+        android:text="马上体验" />
+</FrameLayout>

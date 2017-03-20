@@ -1,0 +1,6 @@
+
+
+只要 app 崩溃  application重新创建，  application数据丢失！
+
+
+所以有些数据还是硬保存比较好！   例如登录状态！

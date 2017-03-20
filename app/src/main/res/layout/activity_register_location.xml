@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_green"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/activity_register_location_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/register_logo" />
+    <TextView
+        android:id="@+id/activity_register_location_please"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/activity_register_location_image"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:text="@string/login_head_front"
+        android:textColor="#808080"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/activity_register_location_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_register_location_please"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_head_back"
+        android:textColor="#717571"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/activity_register_location_inv"
+        android:layout_width="30dip"
+        android:layout_height="120dip"
+        android:layout_below="@+id/activity_register_location_type"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/activity_register_location_school"
+        android:layout_width="120dip"
+        android:layout_height="120dip"
+        android:layout_alignTop="@+id/activity_register_location_inv"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/activity_register_location_inv"
+        android:layout_toStartOf="@+id/activity_register_location_inv"
+        android:background="@drawable/button_effect_register"
+        android:text="@string/school"
+        android:textColor="#4169e1"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/activity_register_location_city"
+        android:layout_width="120dip"
+        android:layout_height="120dip"
+        android:layout_alignTop="@+id/activity_register_location_inv"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/activity_register_location_inv"
+        android:layout_toRightOf="@+id/activity_register_location_inv"
+        android:background="@drawable/button_effect_register"
+        android:text="@string/city"
+        android:textColor="#4169e1"
+        android:textSize="20sp" />
+
+
+
+</RelativeLayout>

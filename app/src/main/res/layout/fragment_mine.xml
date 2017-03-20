@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/mine_background">
+
+    <com.tx.lfclient.view.OverScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/fragment_mine_sub"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@mipmap/mine_bg_image"
+                android:orientation="vertical"
+                android:visibility="visible">
+                <include layout="@layout/fragment_mine_sub" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_mine_sub_un"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@mipmap/mine_bg_image"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <include layout="@layout/fragment_mine_sub_un" />
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/fragment_mine_relative"
+                android:layout_width="fill_parent"
+                android:layout_height="360dip">
+
+                <GridView
+                    android:id="@+id/fragment_mine_grid_view"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#d3d3d3"
+                    android:gravity="center"
+                    android:horizontalSpacing="1dip"
+                    android:listSelector="#808080"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="1dip" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.tx.lfclient.view.OverScrollView>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#2f000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:duplicateParentState="true"
+            android:gravity="center_vertical"
+            android:text="@string/mine"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+</FrameLayout>

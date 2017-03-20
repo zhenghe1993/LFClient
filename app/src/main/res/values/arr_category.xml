@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_title">
+        <item>所有</item>
+        <item>钱包</item>
+        <item>证件</item>
+        <item>钥匙</item>
+        <item>数码</item>
+        <item>饰品</item>
+        <item>衣服</item>
+        <item>文件</item>
+        <item>书籍</item>
+        <item>宠物</item>
+        <item>找人</item>
+        <item>车辆</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="category_image">
+        <item>@mipmap/category_all</item>
+        <item>@mipmap/category_purse</item>
+        <item>@mipmap/category_card</item>
+        <item>@mipmap/category_keys</item>
+        <item>@mipmap/category_digital</item>
+        <item>@mipmap/category_ring</item>
+        <item>@mipmap/category_cloth</item>
+        <item>@mipmap/category_file</item>
+        <item>@mipmap/category_book</item>
+        <item>@mipmap/category_pat</item>
+        <item>@mipmap/category_people</item>
+        <item>@mipmap/category_car</item>
+        <item>@mipmap/category_others</item>
+        <item>@mipmap/transparent</item>
+    </string-array>
+    <string-array name="category_image_ch">
+        <item>@mipmap/category_all_ch</item>
+        <item>@mipmap/category_purse_ch</item>
+        <item>@mipmap/category_card_ch</item>
+        <item>@mipmap/category_keys_ch</item>
+        <item>@mipmap/category_digital_ch</item>
+        <item>@mipmap/category_ring_ch</item>
+        <item>@mipmap/category_cloth_ch</item>
+        <item>@mipmap/category_file_ch</item>
+        <item>@mipmap/category_book_ch</item>
+        <item>@mipmap/category_pat_ch</item>
+        <item>@mipmap/category_people_ch</item>
+        <item>@mipmap/category_car_ch</item>
+        <item>@mipmap/category_others_ch</item>
+        <item>@mipmap/transparent</item>
+    </string-array>
+</resources>
