@@ -18,6 +18,7 @@ import com.tx.lfclient.db.UserDbManager;
 import com.tx.lfclient.entities.User;
 import com.tx.lfclient.url.UrlPath;
 import com.tx.lfclient.utils.DesHelper;
+import com.tx.lfclient.utils.ResultValidatorUtils;
 import com.tx.lfclient.utils.inter.IUIHandler;
 import com.tx.lfclient.utils.UIHandler;
 
@@ -75,7 +76,7 @@ public class LoginActivity extends ImpActivity implements IUIHandler {
 
     protected void init() {
         handler = new UIHandler<>(this);
-       userDbManager=UserDbManager.getInstance();
+        userDbManager = UserDbManager.getInstance();
     }
 
     protected void initData() {
@@ -128,10 +129,7 @@ public class LoginActivity extends ImpActivity implements IUIHandler {
     //网络连接
     private void postLogin(String loginUser, String password) {
 
-        if (!myApplication.isNet()) {
-            ToastShow.showShort(this, "无网络访问！！！");
-            return;
-        }
+
 
         try {
             OkHttpClient client = new OkHttpClient();
@@ -146,24 +144,27 @@ public class LoginActivity extends ImpActivity implements IUIHandler {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    LogUtil.w(e);
                     handler.sendEmptyMessage(0);
 
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+
+                    int code = response.code();
                     String res = response.body().string();
+
                     Message message = new Message();
                     Bundle bundle = new Bundle();
                     bundle.putString("res", res);
+                    bundle.putInt("code", code);
                     message.setData(bundle);
                     message.what = 1;
                     handler.sendMessage(message);
                 }
             });
         } catch (Exception e) {
-            LogUtil.w(getClass().getSimpleName(), e);
+            LogUtil.e(getClass().getSimpleName(), e);
         }
     }
 
@@ -197,49 +198,44 @@ public class LoginActivity extends ImpActivity implements IUIHandler {
             case 1:
                 Bundle bundle = msg.getData();
                 String res = bundle.getString("res");
-                if (res == null) {
-                    ToastShow.showShort(this, "登录失败");
+                int code = bundle.getInt("code");
+
+                res = ResultValidatorUtils.getResult(LoginActivity.this, code, res);
+
+                if (res.equals("ERROR")) {
                     return;
                 }
-                switch (res) {
-                    case "noUser":
-                        ToastShow.showShort(this, "此账号没被注册过");
-                        break;
-                    case "errorPassword":
-                        ToastShow.showShort(this, "密码错误");
-                        break;
-                    default:
-                        User user = null;
-                        try {
-                            ObjectMapper mapper = new ObjectMapper();
-                            user = mapper.readValue(res, User.class);
-                        } catch (Exception e) {
-                            ToastShow.showShort(this, "数据格式错误");
-                            LogUtil.w(e);
-                        }
-                        if (user == null) {
-                            ToastShow.showShort(this, "登陆失败");
-                            break;
-                        }
-                        String password = user.getPassword();
-                        password = DesHelper.getDecode(password);
-                        password = DesHelper.getDecode(password);
-                        user.setPassword(password);
-                        LogUtil.i(user.toString());
-                        userDbManager.saveOrUpdateUser(user);
-                        myApplication.setUser(user);
-                        SPUtils.put(this, "LOGIN", true);
-                        SPUtils.put(this, "LOGIN_TIME", new Date().getTime());
-                        SPUtils.put(this, "LOGIN_USER_ID", user.getId());
-                        myApplication.setLogin(true);
-                        ToastShow.showShort(this, "登陆成功");
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                        myApplication.finishActivity(getClass());
-                        myApplication.finishActivity(MainActivity.class);
 
-                        break;
+
+
+                User user = null;
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    user = mapper.readValue(res, User.class);
+                } catch (Exception e) {
+                    ToastShow.showShort(this, "数据格式错误");
+                    LogUtil.w(e);
                 }
+                if (user == null) {
+                    ToastShow.showShort(this, "登陆失败");
+                    break;
+                }
+                String password = user.getPassword();
+                password = DesHelper.getDecode(password);
+                password = DesHelper.getDecode(password);
+                user.setPassword(password);
+                LogUtil.i(user.toString());
+                userDbManager.saveOrUpdateUser(user);
+                myApplication.setUser(user);
+                SPUtils.put(this, "LOGIN", true);
+                SPUtils.put(this, "LOGIN_TIME", new Date().getTime());
+                SPUtils.put(this, "LOGIN_USER_ID", user.getId());
+                myApplication.setLogin(true);
+                ToastShow.showShort(this, "登陆成功");
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                myApplication.finishActivity(getClass());
+                myApplication.finishActivity(MainActivity.class);
 
                 break;
             case 10:

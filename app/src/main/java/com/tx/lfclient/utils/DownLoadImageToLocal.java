@@ -40,7 +40,6 @@ public class DownLoadImageToLocal {
     private static String root;
 
     static{
-        MyApplication.getInstance().getExternalCacheDir();
         if(hasSDCard()){
            root= Environment.getExternalStorageDirectory().getPath();
         }else{
@@ -80,6 +79,8 @@ public class DownLoadImageToLocal {
 
 
     public static File getTempFile(){
+
+
 
         return new File(tempFile, String.valueOf(System.currentTimeMillis()) + ".jpg");
 

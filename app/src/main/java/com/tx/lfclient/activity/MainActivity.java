@@ -4,15 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.imp.ToastShow;
+
+import com.imp.adapter.ValidatorForm;
+import com.imp.utils.BaseResult;
+import com.imp.utils.ValidatorType;
 import com.tx.lfclient.R;
-import com.tx.lfclient.application.MyApplication;
 import com.tx.lfclient.event.MainEvent;
 import com.tx.lfclient.fragment.FragmentDiscoverList;
 import com.tx.lfclient.fragment.FragmentHomePage;
@@ -25,8 +27,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +62,12 @@ public class MainActivity extends ImpActivity {
         EventBus.getDefault().register(this);
         init();
         initBottomBar();
+
+
+        ValidatorForm form=new ValidatorForm(this);
+        form.addValidator(new BaseResult("账户",ValidatorType.STRING_MAX_LENGTH,"im9p",4));
+        boolean res=form.form();
+        System.out.println(res);
     }
 
 

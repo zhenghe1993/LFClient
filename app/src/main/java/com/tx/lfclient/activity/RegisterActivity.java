@@ -29,6 +29,7 @@ import com.tx.lfclient.url.UrlPath;
 import com.tx.lfclient.utils.DesHelper;
 import com.tx.lfclient.utils.EditTextWatcher;
 import com.tx.lfclient.utils.PictureNaming;
+import com.tx.lfclient.utils.ResultValidatorUtils;
 import com.tx.lfclient.utils.UIHandler;
 import com.tx.lfclient.utils.inter.IEditTextWatcher;
 import com.tx.lfclient.utils.inter.IUIHandler;
@@ -238,15 +239,17 @@ public class RegisterActivity extends ImpActivity implements IUIHandler, IEditTe
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
+                int code = response.code();
                 String res = response.body().string();
-                ObjectMapper objectMapper = new ObjectMapper();
-                User user = objectMapper.readValue(res, User.class);
-                String password = user.getPassword();
-                password = DesHelper.getDecode(password);
-                password = DesHelper.getDecode(password);
-                user.setPassword(password);
-                myApplication.setUser(user);
-                uiHandler.sendEmptyMessage(1);
+
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("res", res);
+                bundle.putInt("code", code);
+                message.setData(bundle);
+                message.what = 1;
+                uiHandler.sendMessage(message);
             }
         });
     }
@@ -259,9 +262,42 @@ public class RegisterActivity extends ImpActivity implements IUIHandler, IEditTe
                 ToastShow.showShort(this, "注册失败");
                 break;
             case 1:
+
+                Bundle bundle = msg.getData();
+                String res = bundle.getString("res");
+                int code = bundle.getInt("code");
+
+                res = ResultValidatorUtils.getResult(RegisterActivity.this, code, res);
+
+                if (res.equals("ERROR")) {
+                    return;
+                }
+
+
+                User user = null;
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    user = mapper.readValue(res, User.class);
+                } catch (Exception e) {
+                    ToastShow.showShort(this, "数据格式错误");
+                    LogUtil.w(e);
+                }
+                if (user == null) {
+                    ToastShow.showShort(this, "注册失败");
+                    break;
+                }
+
+
+                String password = user.getPassword();
+                password = DesHelper.getDecode(password);
+                password = DesHelper.getDecode(password);
+                user.setPassword(password);
+                myApplication.setUser(user);
+
                 ToastShow.showShort(this, "注册成功");
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+
                 myApplication.finishActivity(LoginActivity.class
                         , RegisterLocationActivity.class
                         , ProvinceActivity.class

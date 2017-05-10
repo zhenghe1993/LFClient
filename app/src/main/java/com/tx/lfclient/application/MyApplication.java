@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.tx.lfclient.R;
 import com.tx.lfclient.entities.User;
+import com.tx.lfclient.utils.InitUtils;
 
 import org.xutils.common.util.DensityUtil;
 import org.xutils.common.util.LogUtil;
@@ -54,7 +55,7 @@ public class MyApplication extends Application {
             LogUtil.w(e);
         }
 
-
+        InitUtils.isFirst(this);
     }
 
     public void addActivity(Activity activity) {
@@ -140,4 +141,7 @@ public class MyApplication extends Application {
     public void setExpire(boolean expire) {
         this.expire = expire;
     }
+
+
+
 }

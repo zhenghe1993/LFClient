@@ -4,44 +4,7 @@
     android:background="@mipmap/background_green">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#36cd00">
 
-        <TextView
-            android:id="@+id/LFMessage_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:duplicateParentState="true"
-            android:gravity="center_vertical"
-            android:text=""
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <ImageButton
-            android:id="@+id/LFMessage_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="#00808080"
-            android:contentDescription="@null"
-            android:src="@drawable/arrow_left_gray_white" />
-
-        <TextView
-            android:id="@+id/LFMessage_top_submit"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="@string/submit"
-            android:textColor="@color/normal_write_pressed_gray" />
-    </RelativeLayout>
 
     <com.tx.lfclient.view.OverScrollView
         android:id="@+id/LFMessage_scrollView"
@@ -444,5 +407,42 @@
                 android:textSize="15sp" />
         </LinearLayout>
     </com.tx.lfclient.view.OverScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#36cd00">
 
+        <TextView
+            android:id="@+id/LFMessage_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:duplicateParentState="true"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/LFMessage_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="#00808080"
+            android:contentDescription="@null"
+            android:src="@drawable/arrow_left_gray_white" />
+
+        <TextView
+            android:id="@+id/LFMessage_top_submit"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:textColor="@color/normal_write_pressed_gray" />
+    </RelativeLayout>
 </FrameLayout>

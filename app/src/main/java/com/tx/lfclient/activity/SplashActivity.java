@@ -13,6 +13,7 @@ import com.tx.lfclient.R;
 import com.tx.lfclient.db.UserDbManager;
 import com.tx.lfclient.entities.Pane;
 import com.tx.lfclient.entities.User;
+import com.tx.lfclient.utils.InitUtils;
 import com.tx.lfclient.utils.NetWorkJudge;
 
 import org.xutils.common.util.LogUtil;
@@ -34,7 +35,6 @@ public class SplashActivity extends ImpActivity {
     @ViewInject(R.id.activity_splash_three)
     private ImageView splash_three;
 
-    private UserDbManager userDbManager;
 
     private boolean isFirst;
 
@@ -42,13 +42,10 @@ public class SplashActivity extends ImpActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, this);
 
-        try {
-            init();
-            initData();
-            initView();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        init();
+        initData();
+        initView();
+
 
     }
 
@@ -64,27 +61,11 @@ public class SplashActivity extends ImpActivity {
     }
 
     protected void initData() {
-        isFirst = (boolean) SPUtils.get(this, "IS_FIRST", true);
-        myApplication.setNet(NetWorkJudge.getJudge(this));
-        //判断是否是第一次登录
-        if (!isFirst) {
-            boolean isLogin = (Boolean) SPUtils.get(this, "LOGIN", false);
-            myApplication.setLogin(isLogin);
-            myApplication.setExpire(getExpire(isLogin));
-            //将user信息导入
-            Long id = (Long) SPUtils.get(this, "LOGIN_USER_ID", -1L);
-            User user = userDbManager.getUserById(id);
-
-            if (user != null) {
-                myApplication.setUser(user);
-                LogUtil.i(user.toString());
-            }
-
-        }
+        isFirst = InitUtils.isFirst(this);
     }
 
     protected void init() {
-        userDbManager = UserDbManager.getInstance();
+
     }
 
 
@@ -112,15 +93,6 @@ public class SplashActivity extends ImpActivity {
         }
     }
 
-
-    private boolean getExpire(boolean isLogin) {
-        Date current = new Date();
-        long expireTime = current.getTime();
-        if (isLogin) {
-            expireTime = (long) SPUtils.get(this, "LOGIN_TIME", current.getTime());
-        }
-        return current.getTime() - expireTime > 1000 * 60 * 60 * 24;
-    }
 
     @Override
     protected void onDestroy() {

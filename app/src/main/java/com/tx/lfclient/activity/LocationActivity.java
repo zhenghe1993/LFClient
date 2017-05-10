@@ -19,14 +19,15 @@ import com.tx.lfclient.cascade.SideBar;
 import com.tx.lfclient.cascade.SortAdapter;
 import com.tx.lfclient.cascade.SortModel;
 import com.tx.lfclient.db.UserDbManager;
-import com.tx.lfclient.entities.ReceiveTemplate;
 import com.tx.lfclient.entities.User;
 import com.tx.lfclient.utils.AlertUser;
 import com.tx.lfclient.utils.LocationSelector;
+import com.tx.lfclient.utils.ResultValidatorUtils;
 import com.tx.lfclient.utils.UIHandler;
 import com.tx.lfclient.utils.inter.IAlertUser;
 import com.tx.lfclient.utils.inter.IUIHandler;
 
+import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -158,7 +159,6 @@ public class LocationActivity extends ImpActivity implements IUIHandler, IAlertU
                     break;
                 case "setting":
                     alertUser.post("1", location, "1", null);
-
                     break;
             }
         }
@@ -219,42 +219,53 @@ public class LocationActivity extends ImpActivity implements IUIHandler, IAlertU
 
     @Override
     public void onResponse(Call call, Response response) throws Exception {
+        int code = response.code();
         String res = response.body().string();
-        ObjectMapper objectMapper = new ObjectMapper();
-        ReceiveTemplate template = objectMapper.readValue(res, ReceiveTemplate.class);
-        String data = (String) template.getData();
-        switch (data) {
-            case "Incomplete":
-                handler.sendEmptyMessage(2);
-                break;
-            case "Remote":
-                handler.sendEmptyMessage(3);
-                break;
-            default:
-                user.setLocation(data);
-                user.setToken(template.getToken());
-                myApplication.setUser(user);
-                userDbManager.saveOrUpdateUser(user);
-                handler.sendEmptyMessage(1);
-                break;
-        }
+
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putString("res", res);
+        bundle.putInt("code", code);
+        message.setData(bundle);
+        message.what = 1;
+        handler.sendMessage(message);
+
+
     }
 
     @Override
     public void sendMessage(Message msg) {
         switch (msg.what) {
             case 0:
-                ToastShow.showShort(this, "修改位置失败");
+                ToastShow.showShort(this, "修改失败");
                 break;
             case 1:
+                Bundle bundle = msg.getData();
+                String res = bundle.getString("res");
+                int code = bundle.getInt("code");
+
+                res = ResultValidatorUtils.getResult(LocationActivity.this, code, res);
+
+
+                if (res.equals("ERROR")) {
+                    return;
+                }
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    user = mapper.readValue(res, User.class);
+                } catch (Exception e) {
+                    ToastShow.showShort(this, "数据格式错误");
+                    LogUtil.w(e);
+                }
+                if (user == null) {
+                    ToastShow.showShort(this, "修改失败");
+                    break;
+                }
+
                 ToastShow.showShort(this, "修改位置成功");
+                myApplication.setUser(user);
+                userDbManager.saveOrUpdateUser(user);
                 myApplication.finishActivity(LocationActivity.class, ProvinceActivity.class);
-                break;
-            case 2:
-                ToastShow.showShort(this, "请求失败");
-                break;
-            case 3:
-                ToastShow.showShort(this, "账号异地登录，请重新登录");
                 break;
         }
     }

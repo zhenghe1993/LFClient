@@ -5,21 +5,21 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.EditText;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imp.ToastShow;
 import com.tx.lfclient.R;
 import com.tx.lfclient.db.UserDbManager;
-import com.tx.lfclient.entities.ReceiveTemplate;
 import com.tx.lfclient.entities.User;
 import com.tx.lfclient.utils.AlertUser;
 import com.tx.lfclient.utils.DesHelper;
+import com.tx.lfclient.utils.ResultValidatorUtils;
 import com.tx.lfclient.utils.UIHandler;
 import com.tx.lfclient.utils.inter.IAlertUser;
 import com.tx.lfclient.utils.inter.IUIHandler;
 
+import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -133,44 +133,52 @@ public class AccountPasswordActivity extends ImpActivity implements IUIHandler, 
 
     @Override
     public void onResponse(Call call, Response response) throws Exception {
+
+        int code = response.code();
         String res = response.body().string();
-        ObjectMapper objectMapper = new ObjectMapper();
-        ReceiveTemplate template = objectMapper.readValue(res, ReceiveTemplate.class);
-        String data = (String) template.getData();
-        switch (data) {
-            case "Incomplete":
-                handler.sendEmptyMessage(2);
-                break;
-            case "Remote":
-                handler.sendEmptyMessage(3);
-                break;
-            default:
-                data = DesHelper.getDecode(data);
-                data = DesHelper.getDecode(data);
-                user.setPassword(data);
-                user.setToken(template.getToken());
-                myApplication.setUser(user);
-                userDbManager.saveOrUpdateUser(user);
-                handler.sendEmptyMessage(1);
-                break;
-        }
+
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putString("res", res);
+        bundle.putInt("code", code);
+        message.setData(bundle);
+        message.what = 1;
+        handler.sendMessage(message);
     }
 
     @Override
     public void sendMessage(Message msg) {
         switch (msg.what) {
             case 0:
-                ToastShow.showShort(this, "修改密码失败");
+                ToastShow.showShort(this, "修改失败");
                 break;
             case 1:
+                Bundle bundle = msg.getData();
+                String res = bundle.getString("res");
+                int code = bundle.getInt("code");
+
+                res = ResultValidatorUtils.getResult(AccountPasswordActivity.this, code, res);
+
+
+                if (res.equals("ERROR")) {
+                    return;
+                }
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    user = mapper.readValue(res, User.class);
+                } catch (Exception e) {
+                    ToastShow.showShort(this, "数据格式错误");
+                    LogUtil.w(e);
+                }
+                if (user == null) {
+                    ToastShow.showShort(this, "修改失败");
+                    break;
+                }
+
                 ToastShow.showShort(this, "修改密码成功");
+                myApplication.setUser(user);
+                userDbManager.saveOrUpdateUser(user);
                 myApplication.finishActivity(AccountPasswordActivity.class);
-                break;
-            case 2:
-                ToastShow.showShort(this, "请求失败");
-                break;
-            case 3:
-                ToastShow.showShort(this, "账号异地登录，请重新登录");
                 break;
         }
     }
